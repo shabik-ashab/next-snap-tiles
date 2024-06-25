@@ -1,8 +1,7 @@
 import GetImage from "@/components/GetImage";
 import Header from "@/components/Header";
 
-
-export default function Home() {
+const Home = () => {
   return (
     <main>
       <Header />
@@ -10,3 +9,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

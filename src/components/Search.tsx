@@ -1,9 +1,8 @@
 import React from "react";
 
-export default function Search() {
+const Search = () => {
   return (
     <div className="md:w-2/5">
-      {" "}
       <div className="form-control">
         <input
           type="text"
@@ -14,3 +13,5 @@ export default function Search() {
     </div>
   );
 }
+
+export default Search;
