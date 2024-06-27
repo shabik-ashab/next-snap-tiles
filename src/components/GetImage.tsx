@@ -1,5 +1,22 @@
 import axios from 'axios'
 import React from 'react'
+import { unstable_cache } from 'next/cache';
+import ImageSlide from './ImageSlide';
+
+
+const slideImages = (images:ImageData[]):Slide[] => {
+  const newImages:Slide[] = images.reduce((acc:Slide[], curr) => {
+    acc.push({
+      src: curr.largeImageURL,
+      width: 3840,
+      height: 5070
+    })
+    return acc
+  }, [])
+  return newImages
+}
+
+const getCachedSlide = unstable_cache(async (images) => slideImages(images),['slide-image'])
 
 const getImage = async () => {
   try {
@@ -12,10 +29,29 @@ const getImage = async () => {
 
 const GetImage = async () => {
   const data = await getImage()
-  const images = data.hits
+  const images:ImageData[] = data.hits
+  const cachedSlide:Slide[] = await getCachedSlide(images)
   return (
-    <div>GetImage</div>
+    <div>
+      <ImageSlide images={images} slideImages={cachedSlide} />
+    </div>
   )
 }
 
 export default GetImage
+
+export type ImageData = {
+  id:number;
+  tags: string;
+  webformatURL: string;
+  largeImageURL: string;
+  type: string;
+  likes: number;
+  views: number;
+}
+
+export type Slide = {
+  src: string;
+  width: number;
+  height: number;
+}
