@@ -18,17 +18,17 @@ const slideImages = (images:ImageData[]):Slide[] => {
 
 const getCachedSlide = unstable_cache(async (images) => slideImages(images),['slide-image'])
 
-const getImage = async () => {
+const getImage = async (query:string) => {
   try {
-    const res = await axios.get(`https://pixabay.com/api/?key=${process.env.API_KEY}`)
+    const res = await axios.get(`https://pixabay.com/api/?key=${process.env.API_KEY}&q=${query}`)
     return res.data
   } catch (err) {
     console.log(err)
   }
 }
 
-const GetImage = async () => {
-  const data = await getImage()
+const GetImage = async ({query}:{query:string}) => {
+  const data = await getImage(query)
   const images:ImageData[] = data.hits
   const cachedSlide:Slide[] = await getCachedSlide(images)
   return (
